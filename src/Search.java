@@ -1,7 +1,4 @@
-import Curves.Curve;
-import Curves.Ellipse;
-import Curves.HyperbolicCosine;
-import Curves.Polynomial;
+import Curves.*;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,19 +16,37 @@ public class Search {
     private final double[] coefficients;  // Input should be as good as possible for quick convergence
     private final R2 points;
 
+    /*
+     * Here we document the biggest found values for different curves by just showing the output
+     * -Ellipse:
+     */
     public Search() {
         points = new R2(0.0035, 0.0025);
-        coefficients = new double[]{0.5, 0.5};
+        // Best found ellipse with A=2.2078
+        coefficients = new double[]{0.6301410922492787, 0.6449725029257345};
         curve = new Ellipse(coefficients);
+
+        // Best found cosh with A=2.1869
+        // coefficients = new double[]{-0.7064611151691271, 2.2219398700648094, -1.9119412647101728, 1.2885602155033589};
+        // curve = new HyperbolicCosine(coefficients);
+
+        // Best found secant with A=2,20485
+        // coefficients = new double[]{-0.41924717520255345, 1.7840190991041047, 1.0604889859660755};
+        // curve = new Secant(coefficients);
+
+        // Best found polynomial with A=2.2061
+        // coefficients = new double[]{0.6449431433179632, -0.8044557352332703, -0.17559279232830555, -0.9479741917936974, -2.9591514254784634, -4.4303786242418095, -6.465508816923603, -8.54730959620789};
+        // curve = new Polynomial(coefficients, 8);
+
         // Optimize forever because we'll stop it manually either way
         while(true) {
-            optimizeOnce(0.0001, 0.1);
+            optimizeOnce(0.0005, 0.001);
         }
     }
 
     /**
      * !! WARNING !! Experimental approach, requires some manual tweaking
-     * Moves each coefficient once into the "right" direction by stepSize. It always takes the direction with the least
+     * Moves each coefficient once into the "right" direction. It always takes the direction with the least
      * losses. But it must always move to avoid being trapped in a local maximum or a region which appears as such
      */
     private void optimizeOnce(double origin, double bound) {
@@ -62,7 +77,6 @@ public class Search {
         for (double coefficient : coefficients) {
             coeff_String += coefficient + ", ";
         }
-        // TODO round to signifcan digits
         System.out.println(area + ", " + coeff_String);
     }
 

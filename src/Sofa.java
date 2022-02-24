@@ -63,7 +63,7 @@ public class Sofa {
                     break;
                 }
             }
-            for (int j = doubles.size() - 1; j >= 0; j--) {    // Check lower points
+            for (int j = doubles.size() - 1; j >= 0; j--) {    // Check upper points
                 isInAllCorridors = true;
                 // Check for every corridor every row of point with every point
                 for (Corridor corridor : corridors) {
